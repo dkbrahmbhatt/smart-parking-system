@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Gateway (Simulated)</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Dedicated styles for the simulated payment page */
+        .payment-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            background-color: var(--text-light);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        #payment-status-message {
+            margin-top: 20px;
+            font-size: 1.1em;
+        }
+        .payment-buttons button {
+            margin: 10px;
+            padding: 12px 25px;
+            min-width: 150px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Secure Payment Gateway (SIMULATED)</h1>
+        <p>Complete your booking for Smart Parking</p>
+    </header>
+
+    <main>
+        <div class="payment-container">
+            <h2>Payment Details</h2>
+            <p>Slot ID: <strong id="display-slot">N/A</strong></p>
+            <p>Amount Due: <strong id="display-amount">N/A</strong></p>
+            <p>Transaction ID: <strong id="display-txn">N/A</strong></p>
+
+            <div id="payment-status-message" class="message error">
+                Awaiting user action...
+            </div>
+            
+            <div class="payment-buttons">
+                <button class="button btn-success" id="btn-success">✅ Pay Now (Success)</button>
+                <button class="button btn-danger" id="btn-failure">❌ Fail Payment</button>
+            </div>
+            
+            <p class="mt-lg"><a href="index.html">Cancel and Return to Parking Site</a></p>
+        </div>
+    </main>
+
+    <script>
+        const BASE_URL = 'http://localhost:8080/api/parking';
+
+        // Helper to parse URL parameters
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            const results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        };
+
+        const txnId = getUrlParameter('txnId');
+        const amount = getUrlParameter('amount');
+        const slotId = getUrlParameter('slot');
+        const statusMessage = document.getElementById('payment-status-message');
+        const successButton = document.getElementById('btn-success');
+        const failureButton = document.getElementById('btn-failure');
+
+        // Display details
+        document.getElementById('display-slot').textContent = slotId;
+        document.getElementById('display-amount').textContent = '₹' + parseFloat(amount).toFixed(2);
+        document.getElementById('display-txn').textContent = txnId;
+
+        // Function to call the final confirmation endpoint
+        async function finalizePayment(success) {
+            statusMessage.className = 'message';
+            successButton.disabled = true;
+            failureButton.disabled = true;
+            
+            if (success) {
+                statusMessage.textContent = "Processing success confirmation...";
+                try {
+                    // Call the backend endpoint to mark the transaction and slot as confirmed
+                    const response = await fetch(`${BASE_URL}/confirm-payment/${txnId}`, {
+                        method: 'PUT'
+                    });
+
+                    if (response.ok) {
+                        statusMessage.classList.add('success');
+                        statusMessage.innerHTML = 'Payment **SUCCESSFUL**! Your parking spot is reserved. <br><a href="index.html">Return to Parking Site</a>';
+                    } else {
+                        const errorText = await response.text();
+                        statusMessage.classList.add('error');
+                        statusMessage.innerHTML = `Confirmation failed: ${errorText}<br><a href="index.html">Return to Parking Site</a>`;
+                    }
+
+                } catch (error) {
+                    statusMessage.classList.add('error');
+                    statusMessage.innerHTML = "Network error during confirmation.<br><a href='index.html'>Return to Parking Site</a>";
+                }
+
+            } else {
+                // If the user manually fails, we don't call the API to update the slot, 
+                // but the transaction remains marked as PENDING or INITIATION_FAILED on the server.
+                statusMessage.classList.add('error');
+                statusMessage.innerHTML = 'Payment **FAILED** by user action. <br><a href="index.html">Return to Parking Site</a>';
+            }
+        }
+
+        successButton.addEventListener('click', () => finalizePayment(true));
+        failureButton.addEventListener('click', () => finalizePayment(false));
+
+        // Initial status update
+        if (!txnId) {
+            statusMessage.textContent = "Error: Missing transaction data. Cannot process payment.";
+        } else {
+            statusMessage.textContent = `Please click 'Pay Now' to complete the reservation for slot ${slotId}.`;
+            statusMessage.classList.remove('error');
+            statusMessage.classList.add('message');
+        }
+    </script>
+</body>
+</html>

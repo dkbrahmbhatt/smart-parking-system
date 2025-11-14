@@ -1,0 +1,157 @@
+/*
+ * Admin-specific styles complementing the global styles in style.css.
+ * Focuses on layout, specialized component styling, and responsiveness for the admin page.
+ */
+
+/* Admin-specific layout for metric cards */
+.metric-cards-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: var(--spacing-md);
+	margin-bottom: var(--spacing-lg);
+}
+
+.metric-card {
+	background-color: var(--background-medium);
+	padding: var(--spacing-md);
+	border-radius: var(--border-radius-md);
+	text-align: center;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.metric-card h3 {
+	margin-top: 0;
+	font-size: 1.1em;
+	color: var(--secondary-color);
+}
+
+.metric-card .metric-value {
+	font-size: 2.2em;
+	font-weight: 700;
+	color: var(--primary-color);
+	margin-top: var(--spacing-xs);
+	margin-bottom: 0;
+}
+
+/* Slot Management List Container */
+.slot-management-list {
+	background-color: var(--background-medium);
+	border: 1px solid var(--border-color);
+	border-radius: var(--border-radius-md);
+	padding: var(--spacing-sm);
+}
+
+.slot-row {
+	display: flex;
+	flex-wrap: wrap; /* Allows content to wrap on small screens */
+	justify-content: space-between;
+	align-items: center;
+	padding: var(--spacing-xs) var(--spacing-sm);
+	border-bottom: 1px solid var(--border-color);
+}
+
+.slot-row:last-child {
+	border-bottom: none;
+}
+
+.slot-row-details {
+	flex-grow: 1; /* Allows details to take available space */
+	margin-right: var(--spacing-sm);
+	margin-bottom: var(--spacing-xs); /* For wrapping on small screens */
+}
+
+.slot-row-details strong {
+	font-size: 1.1em;
+	color: var(--text-dark);
+}
+
+.slot-row.occupied {
+	background-color: #FEEEDD;
+	/* Light orange/yellow background for occupied */
+}
+
+.slot-row-actions {
+	display: flex;
+}
+
+.slot-row-actions button {
+	margin-left: var(--spacing-xs);
+	min-width: 80px; /* Ensure consistent button width */
+	padding: var(--spacing-xs) var(--spacing-sm);
+}
+
+/* Transaction Table Styles */
+.transaction-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: var(--spacing-sm);
+	font-size: 0.9em;
+}
+
+.transaction-table th, .transaction-table td {
+	border: 1px solid var(--border-color);
+	padding: var(--spacing-xs);
+	text-align: left;
+}
+
+.transaction-table th {
+	background-color: var(--background-medium);
+	font-weight: 600;
+}
+
+/* Transaction Status Colors */
+.status-SUCCESS {
+	color: var(--success-color);
+	font-weight: 700;
+}
+
+.status-FAILED {
+	color: var(--danger-color);
+	font-weight: 700;
+}
+
+.status-PENDING {
+	color: var(--warning-color);
+	font-weight: 700;
+}
+
+/* --- Mobile Responsiveness --- */
+@media ( max-width : 992px) {
+	/* Tablet/Small Desktop Layout */
+	.metric-cards-grid {
+		grid-template-columns: repeat(2, 1fr); /* Two columns */
+	}
+}
+
+@media ( max-width : 576px) {
+	/* Mobile Layout */
+	.metric-cards-grid {
+		grid-template-columns: 1fr; /* Stack cards vertically */
+	}
+
+	/* Slot Row Stacking */
+	.slot-row {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	.slot-row-details {
+		margin-right: 0;
+		width: 100%;
+		margin-bottom: var(--spacing-sm);
+	}
+	.slot-row-actions {
+		width: 100%;
+		justify-content: space-between; /* Space out buttons */
+		margin-top: var(--spacing-xs);
+	}
+	.slot-row-actions button {
+		margin-left: 0;
+		margin-right: var(--spacing-xs);
+	}
+
+	/* Transaction Table Font Size */
+	.transaction-table th, .transaction-table td {
+		font-size: 0.75em;
+		padding: 5px;
+	}
+}

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Smart Parking</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin.css"> 
+</head>
+<body>
+    <header style="background-color: var(--secondary-color);">
+        <h1>Admin Control Panel</h1>
+        <p>Monitor & Manage Parking System</p>
+    </header>
+
+    <main>
+        <!-- <a href="index.html" class="button btn-primary" style="margin-bottom: var(--spacing-lg);">← Back to User Site</a> -->
+        
+        <section>
+            <h2>📊 System Overview</h2>
+            <div id="admin-report-details" class="metric-cards-grid">
+                
+                <div class="metric-card" id="total-slots-card">
+                    <h3>Total Slots</h3>
+                    <p class="metric-value">--</p>
+                </div>
+                
+                <div class="metric-card" id="available-slots-card">
+                    <h3>Available Slots</h3>
+                    <p class="metric-value">--</p>
+                </div>
+                
+                <div class="metric-card" id="occupied-slots-card">
+                    <h3>Occupied Slots</h3>
+                    <p class="metric-value">--</p>
+                </div>
+                
+                <div class="metric-card" id="simulated-revenue-card">
+                    <h3>Total Revenue</h3>
+                    <p class="metric-value">--</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>➕ Add New Parking Slot</h2>
+            <form id="slot-form">
+                <div class="form-group">
+                    <label for="newSlotId">Slot ID:</label>
+                    <input type="text" id="newSlotId" placeholder="E.g., D5" required>
+                </div>
+                <div class="form-group">
+                    <label for="newSlotPrice">Base Price (₹):</label>
+                    <input type="number" id="newSlotPrice" placeholder="E.g., 25.0" value="20.0" step="5.0" required>
+                </div>
+                <button type="submit" class="button btn-success">➕ Create Slot</button>
+            </form>
+            <p id="form-message" class="message"></p>
+        </section>
+
+        <section>
+            <h2>🔑 Manage Existing Slots</h2>
+            <div id="all-slots-container" class="slot-management-list">
+                <p>Loading slots...</p>
+            </div>
+        </section>
+        
+        <section>
+            <h2>📈 Transaction History & Revenue Analytics</h2>
+            
+            <h3>Past Transactions</h3>
+            <div style="overflow-x: auto;">
+                <table id="transaction-table" class="transaction-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Slot</th>
+                            <th>Plate</th>
+                            <th>Time</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td colspan="6">Loading transaction history...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="admin.js"></script>
+</body>
+</html>

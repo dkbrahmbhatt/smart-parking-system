@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Parking Reservation</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin.css"> <style>
+        /* General styling for the user page */
+        #parking-slots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .parking-slot-card {
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .parking-slot-card:hover:not(.booked) {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .parking-slot-card .slot-id {
+            display: block;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .parking-slot-card .slot-price {
+            display: block;
+            font-size: 0.9em;
+            color: var(--secondary-color);
+        }
+
+        .parking-slot-card.available {
+            background-color: var(--success-light);
+            border: 2px solid var(--success-color);
+        }
+
+        .parking-slot-card.booked {
+            background-color: var(--danger-light);
+            border: 2px solid var(--danger-color);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        
+        /* Booking Form Grid (for better layout) */
+        #book-spot-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-md);
+        }
+        #book-spot-form button {
+            grid-column: 1 / -1; /* Make button span all columns */
+            margin-top: var(--spacing-sm);
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 600px) {
+            #parking-slots-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Smart Parking System</h1>
+        <p>Find & Reserve Your Spot Instantly</p>
+        <div class="header-actions">
+            <a href="admin.html" class="button btn-secondary">Admin Panel →</a>
+        </div>
+    </header>
+
+    <main>
+        <section>
+            <h2>Current Availability</h2>
+            <div class="metric-cards-grid" style="grid-template-columns: 1fr;">
+                <div class="metric-card" style="background-color: var(--primary-light);">
+                    <p class="metric-value" id="total-available">Loading status...</p>
+                </div>
+            </div>
+            
+            <div id="parking-slots-grid">
+                </div>
+        </section>
+
+        <hr>
+
+        <section id="booking-section">
+            <h2>Book Your Spot Now</h2>
+            <form id="book-spot-form">
+                <div class="form-group">
+                    <label for="slotId">Selected Slot ID:</label>
+                    <input type="text" id="slotId" placeholder="E.g., A1" required readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label for="durationHours">Booking Duration (Hours):</label>
+                    <select id="durationHours" required>
+                        <option value="1">1 Hour</option>
+                        <option value="2">2 Hours</option>
+                        <option value="3">3 Hours</option>
+                        <option value="4">4 Hours</option>
+                        <option value="8">8 Hours (Full Day)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="vehiclePlate">Your Vehicle Plate Number:</label>
+                    <input type="text" id="vehiclePlate" placeholder="E.g., MH12AB1234" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="mobileNumber">Mobile Number:</label>
+                    <input type="text" id="mobileNumber" placeholder="10 digits" pattern="\d{10}" maxlength="10" required>
+                </div>
+                
+                <button type="submit" class="button btn-primary">Reserve & Proceed to Payment</button>
+            </form>
+            <p id="booking-message" class="message"></p>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
