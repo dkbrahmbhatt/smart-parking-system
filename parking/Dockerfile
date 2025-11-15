@@ -2,7 +2,7 @@
 FROM maven:3.9.5-eclipse-temurin-17 AS build
 WORKDIR /parking
 COPY pom.xml .
-COPY src ./parking/src
+COPY src src
 # Use the Maven command directly, as Maven is guaranteed to be installed here
 RUN mvn clean package -DskipTests
 
