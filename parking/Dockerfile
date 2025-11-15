@@ -3,7 +3,7 @@ FROM maven:3.9.5-eclipse-temurin-17 AS build
 WORKDIR /parking
 
 # Copy the pom.xml FIRST to allow Docker to cache dependency downloads
-COPY pom.xml .
+COPY /parking/pom.xml .
 
 # Use the globally available 'mvn' command for compilation
 RUN mvn clean package -DskipTests
