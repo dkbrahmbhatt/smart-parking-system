@@ -14,7 +14,7 @@ WORKDIR /parking
 
 # COPY the built JAR file from the build stage 
 # REPLACE 'your-app-name-0.0.1-SNAPSHOT.jar' with the exact filename
-COPY --from=build /parking/target/your-app-name-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build /parking/target/parking-0.0.1-SNAPSHOT.jar app.jar
 
 EXPOSE 8080
 
