@@ -18,7 +18,7 @@ RUN mvn clean package -DskipTests
 
 # --- Stage 2: Create the Final Runtime Image ---
 FROM eclipse-temurin:17-jre-alpine
-WORKDIR /app
+WORKDIR /parking
 
 # COPY the built JAR file from the build stage 
 # REPLACE 'your-app-name-0.0.1-SNAPSHOT.jar' with the exact filename
