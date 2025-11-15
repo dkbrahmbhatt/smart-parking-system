@@ -5,13 +5,6 @@ WORKDIR /parking
 # Copy the pom.xml FIRST to allow Docker to cache dependency downloads
 COPY pom.xml .
 
-# Copy all necessary source files and resources:
-
-# 2. The Maven Wrapper files (just in case they are needed for context checking)
-COPY .mvn .mvn
-COPY mvnw .
-COPY mvnw.cmd .
-
 # Use the globally available 'mvn' command for compilation
 RUN mvn clean package -DskipTests
 
