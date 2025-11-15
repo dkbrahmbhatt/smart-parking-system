@@ -7,7 +7,7 @@ COPY pom.xml .
 
 # Copy all necessary source files and resources:
 # 1. The source code directory
-COPY src src
+COPY src /src
 # 2. The Maven Wrapper files (just in case they are needed for context checking)
 COPY .mvn .mvn
 COPY mvnw .
